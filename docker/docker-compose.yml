@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  dealers-db:
+    image: postgres:15.2
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: dealer-user
+      POSTGRES_PASSWORD: dealer-pass
+      POSTGRES_DB: dealer
+    volumes:
+      - ./docker-init-dealers-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+  vehicles-db:
+    image: postgres:15.2
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: vehicle-user
+      POSTGRES_PASSWORD: vehicle-pass
+      POSTGRES_DB: vehicle
+    volumes:
+      - ./docker-init-vehicles-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+  store-db:
+    image: postgres:15.2
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_USER: store-user
+      POSTGRES_PASSWORD: store-pass
+      POSTGRES_DB: store
+    volumes:
+      - ./docker-init-store-db.sql:/docker-entrypoint-initdb.d/init-db.sql

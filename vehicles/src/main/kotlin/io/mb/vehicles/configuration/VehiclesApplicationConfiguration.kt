@@ -1,0 +1,9 @@
+package io.mb.vehicles.configuration
+
+import io.mb.vehicles.configuration.properties.BuildInfoProperties
+import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.annotation.Configuration
+
+@EnableConfigurationProperties(BuildInfoProperties::class)
+@Configuration
+class VehiclesApplicationConfiguration

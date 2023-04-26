@@ -1,0 +1,41 @@
+server:
+  port: ${PORT:8084}
+  error:
+    include-binding-errors: always
+    include-message: always
+
+spring:
+  application:
+    name: store
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health.show-details: ALWAYS
+  info:
+    env:
+      enabled: true
+
+api:
+  dealer:
+    v1:
+      host: localhost
+      port: 8081
+      protocol: http
+      base-path: /
+  vehicle:
+    v1:
+      host: localhost
+      port: 8082
+      protocol: http
+      base-path: /
+
+info:
+  build:
+    artifact: "@project.artifactId@"
+    name: "@project.name@"
+    description: "@project.description@"
+    version: "@project.version@"

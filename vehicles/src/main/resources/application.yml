@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8082}
+  error:
+    include-binding-errors: always
+    include-message: always
+
+spring:
+  application:
+    name: vehicles
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health.show-details: ALWAYS
+  info:
+    env:
+      enabled: true
+
+info:
+  build:
+    artifact: "@project.artifactId@"
+    name: "@project.name@"
+    description: "@project.description@"
+    version: "@project.version@"

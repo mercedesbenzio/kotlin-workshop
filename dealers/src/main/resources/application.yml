@@ -1,0 +1,25 @@
+server:
+  port: ${PORT:8081}
+
+spring:
+  application:
+    name: dealers
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+  info:
+    env:
+      enabled: true
+
+info:
+  build:
+    artifact: "@project.artifactId@"
+    name: "@project.name@"
+    description: "@project.description@"
+    version: "@project.version@"

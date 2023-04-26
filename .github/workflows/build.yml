@@ -1,0 +1,23 @@
+name: Build
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ windows-latest, ubuntu-latest, macos-latest ]
+        projects: [ dealers, store-java, store-kotlin, vehicles ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: 17
+      - name: Compile
+        shell: bash
+        working-directory: ${{ matrix.projects }}
+        run: mvn clean package
