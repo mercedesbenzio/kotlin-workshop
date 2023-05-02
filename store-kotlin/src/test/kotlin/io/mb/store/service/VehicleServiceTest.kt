@@ -54,8 +54,8 @@ class VehicleServiceTest : FunSpec({
             storeService.findByDealerId(dealerIdSlot.captured)
         }
 
-        coVerify {
-            vehicleIdSlot.forEach {
+        vehicleIdSlot.forEach {
+            coVerify {
                 vehicleApiService.getVehicle(it)
             }
         }

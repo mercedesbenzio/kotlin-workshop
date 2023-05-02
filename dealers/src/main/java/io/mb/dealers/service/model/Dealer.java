@@ -5,6 +5,10 @@ import java.util.Objects;
 // @Builder -> Lombok's @Builder annotation could be used here to avoid the boilerplate code
 public record Dealer(String id, String name, String description) {
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static final class Builder {
 
         private static final String DEALER_ID_NOT_NULL_MESSAGE = "Dealer id must not be null";
@@ -36,9 +40,5 @@ public record Dealer(String id, String name, String description) {
         public Dealer build() {
             return new Dealer(id, name, description);
         }
-    }
-
-    public static Builder builder() {
-        return new Builder();
     }
 }

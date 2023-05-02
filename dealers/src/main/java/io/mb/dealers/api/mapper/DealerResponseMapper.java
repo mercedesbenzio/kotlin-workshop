@@ -14,7 +14,7 @@ public class DealerResponseMapper {
 
         // TODO Optimize the method below
         // Can you do this better without using the if statement?
-        
+
         DealerResponse result = null;
 
         if (dealer != null) {

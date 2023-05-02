@@ -1,12 +1,12 @@
 package io.mb.store.service
 
 import io.mb.store.resource.dto.DealerVehiclesDto
-import io.mb.store.resource.dto.ItemDto
 import io.mb.store.resource.dto.VehicleDto
 import io.mb.store.service.external.DealerApiService
 import io.mb.store.service.external.VehicleApiService
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
 import org.springframework.stereotype.Service
 
 @Service

@@ -56,7 +56,9 @@ class VehicleController(
      *
      * Also, you will need to handover to the method the fuel type you are searching for...
      */
-    fun findByFuelType(/** Add missing arguments **/): List<VehicleDto> {
+    fun findByFuelType(
+        /** Add missing arguments **/
+    ): List<VehicleDto> {
         TODO("Implement method body")
     }
 }

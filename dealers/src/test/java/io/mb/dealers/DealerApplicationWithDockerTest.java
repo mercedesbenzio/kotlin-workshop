@@ -8,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 
-/** Example using testcontainers **/
+/**
+ * Example using testcontainers
+ **/
 @ActiveProfiles("test-docker")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Disabled // enabled it if you have docker in your computer

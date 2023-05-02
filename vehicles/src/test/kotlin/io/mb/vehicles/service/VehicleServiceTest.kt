@@ -13,7 +13,7 @@ import io.mb.vehicles.resource.exception.VehicleNotFoundException
 import io.mb.vehicles.resource.mapper.toVehicleDto
 import io.mockk.*
 
-class VehicleServiceTest: FunSpec({
+class VehicleServiceTest : FunSpec({
 
     val vehicleRepository = mockk<VehicleRepository>()
     val vehicleService = VehicleService(vehicleRepository)

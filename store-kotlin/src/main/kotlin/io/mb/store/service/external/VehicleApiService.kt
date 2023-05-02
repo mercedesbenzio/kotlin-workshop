@@ -5,7 +5,9 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flatMapConcat
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
@@ -25,7 +27,7 @@ class VehicleApiService(
     }
 
     @OptIn(FlowPreview::class)
-    suspend fun getVehicles(vins: Sequence<String>): Flow<VehicleDto> =
+    fun getVehicles(vins: Sequence<String>): Flow<VehicleDto> =
         vins.chunked(REQUEST_CONCURRENCY_LEVEL).asFlow()
             .flatMapConcat { getVehiclesConcurrently(it).asFlow() }
 

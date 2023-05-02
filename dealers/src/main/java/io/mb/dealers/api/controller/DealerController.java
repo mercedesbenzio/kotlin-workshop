@@ -7,7 +7,6 @@ import io.mb.dealers.service.DealerService;
 import io.mb.dealers.service.mapper.DealerMapper;
 import io.mb.dealers.service.model.Dealer;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

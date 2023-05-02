@@ -81,7 +81,7 @@ class VehicleServiceTest {
      * This method should test that {@link VehicleService#getAllVehicles()}
      * returns the information of all available vehicles in all dealers
      * grouped by dealer id.
-      */
+     */
     @Test
     @Disabled
     void getAllVehicles_has_expected_results() {
