@@ -2,6 +2,7 @@ package io.mb.vehicles.service
 
 import io.mb.vehicles.model.Vehicle
 import io.mb.vehicles.repository.VehicleRepository
+import io.mb.vehicles.resource.dto.FuelType
 import io.mb.vehicles.resource.dto.VehicleCreateDto
 import io.mb.vehicles.resource.dto.VehicleDto
 import io.mb.vehicles.resource.exception.VehicleNotFoundException
@@ -15,8 +16,11 @@ class VehicleService(
     private val vehicleRepository: VehicleRepository,
 ) {
 
-    fun findAll(): List<VehicleDto> {
-        return vehicleRepository.findAll().map(Vehicle::toVehicleDto)
+    fun findAll(fuelType: FuelType?): List<VehicleDto> {
+        return vehicleRepository.run {
+            if (fuelType == null) findAll()
+            else findByFuelType(fuelType.name)
+        }.map(Vehicle::toVehicleDto)
     }
 
     fun findByVin(vin: String): VehicleDto {

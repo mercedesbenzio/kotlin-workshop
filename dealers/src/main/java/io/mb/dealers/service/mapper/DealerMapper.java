@@ -13,21 +13,18 @@ public class DealerMapper {
 
     public Optional<Dealer> mapToDealer(final CreateDealerRequest createDealerRequest) {
 
-        // TODO Optimize the method below
+        // TODO (DONE) Optimize the method below
         // Can you do this better without using the if statement?
+        // ANSWER Yes we can by using Optional :)
 
-        Dealer result = null;
-
-        if (createDealerRequest != null) {
-
-            result = Dealer.builder()
-                    .id(createDealerRequest.id())
-                    .name(createDealerRequest.name())
-                    .description(createDealerRequest.description())
-                    .build();
-        }
-
-        return Optional.ofNullable(result);
+        return Optional.ofNullable(createDealerRequest)
+                .map(x ->
+                        Dealer.builder()
+                                .id(x.id())
+                                .name(x.name())
+                                .description(x.description())
+                                .build()
+                );
     }
 
     public Dealer mapToDealer(final DealerEntity dealerEntity) {

@@ -12,17 +12,12 @@ public class DealerResponseMapper {
 
     public Optional<DealerResponse> mapToDealerResponse(final Dealer dealer) {
 
-        // TODO Optimize the method below
+        // TODO (DONE) Optimize the method below
         // Can you do this better without using the if statement?
+        // ANSWER Yes we can by using Optional
 
-        DealerResponse result = null;
-
-        if (dealer != null) {
-
-            result = new DealerResponse(dealer.id(), dealer.name(), dealer.description());
-        }
-
-        return Optional.ofNullable(result);
+        return Optional.ofNullable(dealer)
+                .map(x -> new DealerResponse(x.id(), x.name(), x.description()));
     }
 
     public List<DealerResponse> mapToDealerResponses(final List<Dealer> dealers) {

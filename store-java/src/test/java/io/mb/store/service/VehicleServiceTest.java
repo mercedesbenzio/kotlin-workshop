@@ -1,11 +1,9 @@
 package io.mb.store.service;
 
-import io.mb.store.resource.dto.ItemDto;
-import io.mb.store.resource.dto.VehicleDto;
+import io.mb.store.resource.dto.*;
 import io.mb.store.service.external.DealerApiService;
 import io.mb.store.service.external.VehicleApiService;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -19,7 +17,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
@@ -76,15 +77,95 @@ class VehicleServiceTest {
     }
 
     /**
-     * TODO Implement test method below
+     * TODO (DONE) Implement test method below
      * <br>
      * This method should test that {@link VehicleService#getAllVehicles()}
      * returns the information of all available vehicles in all dealers
      * grouped by dealer id.
      */
     @Test
-    @Disabled
     void getAllVehicles_has_expected_results() {
-        Assertions.fail("Implement the missing method!");
+        String brand = "Mercedes-Benz";
+        String dealerId1 = "dealer1", dealerId2 = "dealer2";
+        String vin1 = "vin1", vin2 = "vin2", vin3 = "vin3";
+
+        ItemDto item1 = new ItemDto(1L, vin1, dealerId1);
+        ItemDto item2 = new ItemDto(2L, vin3, dealerId1);
+        ItemDto item3 = new ItemDto(3L, vin2, dealerId2);
+
+        List<ItemDto> dealer1Items = List.of(item1, item2);
+        List<ItemDto> dealer2Items = List.of(item3);
+
+        Map<String, List<ItemDto>> groupedByDealerItems = new LinkedHashMap<>();
+        groupedByDealerItems.put(dealerId1, dealer1Items);
+        groupedByDealerItems.put(dealerId2, dealer2Items);
+
+        DealerDto dealer1 = new DealerDto(dealerId1, "ABC Auto Sales", null);
+        DealerDto dealer2 = new DealerDto(dealerId2, "XYZ Motors", null);
+
+        VehicleDto vehicle1 = new VehicleDto(
+                vin1, brand, "C220d",
+                FuelType.DIESEL, MileageUnit.KM, null, null
+        );
+        VehicleDto vehicle2 = new VehicleDto(
+                vin2, brand, "A180",
+                FuelType.GASOLINE, MileageUnit.KM, null, null
+        );
+        VehicleDto vehicle3 = new VehicleDto(
+                vin3, brand, "EQA250",
+                FuelType.ELECTRIC, MileageUnit.KM, null, null
+        );
+
+        List<VehicleDto> dealer1Vehicles = List.of(vehicle1, vehicle3);
+        List<VehicleDto> dealer2Vehicles = List.of(vehicle2);
+
+        Mockito.when(storeService.finAllGroupedByDealerId())
+                .thenReturn(groupedByDealerItems);
+
+        Mockito.when(dealerApiService.getDealer(Mockito.anyString()))
+                .thenReturn(
+                        Mono.justOrEmpty(dealer1),
+                        Mono.justOrEmpty(dealer2)
+                );
+
+        Mockito.when(vehicleApiService.getVehicles(Mockito.any()))
+                .thenReturn(
+                        Flux.fromIterable(dealer1Vehicles),
+                        Flux.fromIterable(dealer2Vehicles)
+                );
+
+        Flux<DealerVehiclesDto> allVehicles = vehicleService.getAllVehicles();
+
+        StepVerifier.create(allVehicles)
+                .expectNext(new DealerVehiclesDto(dealer1.name(), dealer1Vehicles))
+                .expectNext(new DealerVehiclesDto(dealer2.name(), dealer2Vehicles))
+                .verifyComplete();
+
+        ArgumentCaptor<String> dealerIdCaptor = ArgumentCaptor.forClass(String.class);
+        @SuppressWarnings("unchecked") ArgumentCaptor<Stream<String>> streamArgumentCaptor =
+                ArgumentCaptor.forClass(Stream.class);
+
+        Mockito.verify(storeService).finAllGroupedByDealerId();
+        Mockito.verify(dealerApiService, Mockito.times(2))
+                .getDealer(dealerIdCaptor.capture());
+        Mockito.verify(vehicleApiService, Mockito.times(2))
+                .getVehicles(streamArgumentCaptor.capture());
+
+        Assertions.assertThat(dealerIdCaptor.getAllValues()).containsExactly(
+                dealerId1, dealerId2
+        );
+
+        Assertions.assertThat(streamArgumentCaptor.getAllValues())
+                .hasSize(2)
+                .satisfies(
+                        x -> Assertions.assertThat(x.toList())
+                                .containsExactly(vin1, vin3),
+                        Assertions.atIndex(0)
+                )
+                .satisfies(
+                        x -> Assertions.assertThat(x.toList())
+                                .containsExactly(vin2),
+                        Assertions.atIndex(1)
+                );
     }
 }

@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface DealerRepository extends JpaRepository<DealerEntity, String> {
 
     Optional<DealerEntity> findByDealerId(String dealerId);
+
+    boolean existsByDealerId(String dealerId);
 }

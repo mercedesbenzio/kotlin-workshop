@@ -22,12 +22,14 @@ class StoreService(
             .map(Item::toItemDto)
 
     /**
-     * TODO Implement the method below
+     * TODO (DONE) Implement the method below
      *
      * This method should return all items grouped by dealer id
      */
     fun findAllGroupedByDealerId(): Map<String, List<ItemDto>> =
-        TODO("Implement this method")
+        storeRepository.findAll().asSequence()
+            .map(Item::toItemDto)
+            .groupBy { it.dealerId }
 
     @Transactional
     fun save(itemCreateDto: ItemCreateDto): ItemDto =

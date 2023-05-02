@@ -33,13 +33,8 @@ class DealerServiceTest {
     void save_throws_exception_when_dealer_already_exists() {
         final var dealerId = "1234";
 
-        final DealerEntity dealerEntity = DealerEntity.builder()
-                .dealerId(dealerId)
-                .name("a_dealer")
-                .build();
-
-        Mockito.when(dealerRepository.findByDealerId(Mockito.anyString()))
-                .thenReturn(Optional.ofNullable(dealerEntity));
+        Mockito.when(dealerRepository.existsByDealerId(Mockito.anyString()))
+                .thenReturn(true);
 
         final Dealer dealer = Dealer.builder()
                 .id(dealerId)
@@ -54,7 +49,7 @@ class DealerServiceTest {
 
         final var dealerIdCaptor = ArgumentCaptor.forClass(String.class);
 
-        Mockito.verify(dealerRepository).findByDealerId(dealerIdCaptor.capture());
+        Mockito.verify(dealerRepository).existsByDealerId(dealerIdCaptor.capture());
         Mockito.verifyNoMoreInteractions(dealerRepository);
         Mockito.verifyNoInteractions(dealerMapper);
 
@@ -65,8 +60,8 @@ class DealerServiceTest {
     void save_is_persisted_when_dealer_does_not_exist() {
         final String dealerId = "1234";
 
-        Mockito.when(dealerRepository.findByDealerId(Mockito.anyString()))
-                .thenReturn(Optional.empty());
+        Mockito.when(dealerRepository.existsByDealerId(Mockito.anyString()))
+                .thenReturn(false);
 
         final DealerEntity dealerEntity = Mockito.mock(DealerEntity.class);
 
@@ -86,7 +81,7 @@ class DealerServiceTest {
         final var dealerIdCaptor = ArgumentCaptor.forClass(String.class);
         final var dealerEntityCaptor = ArgumentCaptor.forClass(DealerEntity.class);
 
-        Mockito.verify(dealerRepository).findByDealerId(dealerIdCaptor.capture());
+        Mockito.verify(dealerRepository).existsByDealerId(dealerIdCaptor.capture());
         Mockito.verify(dealerMapper).mapToDealer(dealerEntityCaptor.capture());
         Mockito.verifyNoMoreInteractions(dealerRepository, dealerMapper);
 

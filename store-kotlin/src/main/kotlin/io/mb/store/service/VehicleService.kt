@@ -1,12 +1,11 @@
 package io.mb.store.service
 
 import io.mb.store.resource.dto.DealerVehiclesDto
+import io.mb.store.resource.dto.ItemDto
 import io.mb.store.resource.dto.VehicleDto
 import io.mb.store.service.external.DealerApiService
 import io.mb.store.service.external.VehicleApiService
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import org.springframework.stereotype.Service
 
 @Service
@@ -22,11 +21,20 @@ class VehicleService(
     }
 
     /**
-     * TODO Implement the method below
+     * TODO (DONE) Implement the method below
      *
      * This method should return all vehicles
      * that are available in a dealer
      */
-    fun getAllVehicles(): Flow<DealerVehiclesDto> =
-        TODO("Implement this method")
+    fun getAllVehicles(): Flow<DealerVehiclesDto> = flow {
+        storeService.findAllGroupedByDealerId().forEach { (dealerId, vehicles) ->
+            val dealerDto = dealerApiService.getDealer(dealerId)
+
+            val vehicleDtos = vehicles.asSequence().map(ItemDto::vin).let {
+                vehicleApiService.getVehicles(it)
+            }.toList()
+
+            emit(DealerVehiclesDto(dealerDto.name, vehicleDtos))
+        }
+    }
 }

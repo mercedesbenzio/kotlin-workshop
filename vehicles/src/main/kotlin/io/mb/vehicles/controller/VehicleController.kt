@@ -1,8 +1,10 @@
 package io.mb.vehicles.controller
 
+import io.mb.vehicles.resource.FUEL_TYPE_PARAM
 import io.mb.vehicles.resource.VEHICLES_BASE_PATH
 import io.mb.vehicles.resource.VEHICLES_BY_VIN
 import io.mb.vehicles.resource.VIN_PARAM
+import io.mb.vehicles.resource.dto.FuelType
 import io.mb.vehicles.resource.dto.VehicleCreateDto
 import io.mb.vehicles.resource.dto.VehicleDto
 import io.mb.vehicles.service.VehicleService
@@ -30,9 +32,9 @@ class VehicleController(
     }
 
     @GetMapping
-    fun findAll(): List<VehicleDto> {
+    fun findAll(@RequestParam(FUEL_TYPE_PARAM, required = false) fuelType: FuelType?): List<VehicleDto> {
         logger.info { "Fetching all vehicles" }
-        return vehicleService.findAll().also {
+        return vehicleService.findAll(fuelType).also {
             logger.info { "Returned all vehicles" }
         }
     }
@@ -47,7 +49,7 @@ class VehicleController(
     }
 
     /**
-     * TODO Implement the method below
+     * TODO (DONE) Implement the method below
      *
      * Implement a find by fuel method that retrieves all vehicles
      * with the given fuel type.
@@ -56,9 +58,11 @@ class VehicleController(
      *
      * Also, you will need to handover to the method the fuel type you are searching for...
      */
-    fun findByFuelType(
+    private fun findByFuelType(
         /** Add missing arguments **/
     ): List<VehicleDto> {
         TODO("Implement method body")
+        // This was done in findAll method with a query parameter
+        // to filter vehicles from a given fuel type
     }
 }

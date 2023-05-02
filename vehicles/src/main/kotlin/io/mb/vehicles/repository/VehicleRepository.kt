@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface VehicleRepository : JpaRepository<Vehicle, String> {
     fun findByVin(vin: String): Vehicle?
+    fun findByFuelType(fuelType: String): List<Vehicle>
 }

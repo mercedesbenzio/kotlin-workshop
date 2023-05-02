@@ -6,6 +6,7 @@ const val VEHICLES_BY_VIN = "/{vin}"
 
 // PARAM
 const val VIN_PARAM = "vin"
+const val FUEL_TYPE_PARAM = "fuelType"
 
 // DB
 const val DB_SCHEMA = "vehicle"
